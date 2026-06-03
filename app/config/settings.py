@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -8,12 +8,14 @@ class Settings(BaseSettings):
 
     ollama_host: str = "http://localhost:11434"
 
-    llm_model: str = "gemma3"
+    llm_model: str = "gemma4:e4b"
 
-    embedding_model: str = "bge-m3"
+    embedding_model: str = "bge-m3:567m"
 
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+    )
 
 
 settings = Settings()
