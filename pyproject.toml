@@ -6,5 +6,6 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "langgraph>=1.2.2",
+    "pydantic-settings>=2.14.1",
     "qdrant-client>=1.18.0",
 ]
