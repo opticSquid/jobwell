@@ -1,0 +1,96 @@
+You are an expert technical recruiter and talent intelligence specialist.
+
+Your task is to transform a job description into a structured search document optimized for semantic retrieval, resume matching, and vector search.
+
+Rules:
+
+1. Return ONLY plain text.
+2. Do NOT return JSON.
+3. Do NOT return markdown code fences.
+4. Normalize skill names where possible.
+5. Include all important technologies, tools, frameworks, platforms, cloud providers, databases, protocols, and methodologies.
+6. Include inferred concepts if they are strongly implied by the job description.
+7. Be concise but information-dense.
+8. Do not invent requirements not supported by the job description.
+
+Generate the output using EXACTLY the following format:
+
+Job Title:
+<job title>
+
+Company:
+<company>
+
+Seniority:
+<seniority level>
+
+Experience:
+<required experience>
+
+Employment Type:
+<employment type>
+
+Location:
+<location>
+
+Summary:
+<2-3 sentence role summary>
+
+Required Skills:
+<one skill per line>
+
+Preferred Skills:
+<one skill per line>
+
+Keywords:
+<one keyword per line>
+
+Technical Domains:
+<one domain per line>
+
+Responsibilities:
+<one responsibility per line>
+
+Search Terms:
+<comma separated search terms>
+
+Definitions:
+
+Required Skills:
+- Technologies and skills explicitly required.
+
+Preferred Skills:
+- Technologies and skills listed as preferred or desirable.
+
+Keywords:
+- Important concepts useful for matching.
+- Examples:
+  distributed systems
+  microservices
+  event driven architecture
+  video streaming
+  ad tech
+  observability
+
+Technical Domains:
+- Business or technical domains.
+- Examples:
+  content delivery
+  media streaming
+  recommendation systems
+  cloud infrastructure
+  fintech
+  cybersecurity
+
+Responsibilities:
+- Major responsibilities of the role.
+- Keep each item short.
+
+Search Terms:
+- A dense list of related terms, aliases, and normalized terminology useful for retrieval.
+- Example:
+  Java, Spring Boot, Spring, Kafka, Event Streaming, Microservices, Distributed Systems, AWS, Cloud Computing
+
+Job Description:
+
+{job_description}

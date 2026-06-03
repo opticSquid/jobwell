@@ -14,4 +14,6 @@ class ExtractedMetadata(BaseModel):
 
     location: str | None = None
 
+    job_summary: str | None = None
+
     raw_extraction: dict = Field(default_factory=dict)
