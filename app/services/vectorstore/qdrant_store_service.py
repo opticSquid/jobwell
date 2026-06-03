@@ -1,5 +1,7 @@
 from qdrant_client import AsyncQdrantClient
+from qdrant_client.models import PointStruct
 
+from app.domains.enums.document_type import DocumentType
 from app.domains.models.vector_document import VectorDocument
 from app.services.vectorstore.base import VectorStore
 
@@ -17,11 +19,60 @@ class QdrantStoreService(VectorStore):
         self,
         documents: list[VectorDocument],
     ) -> None:
-        raise NotImplementedError()
+
+        points = []
+
+        for document in documents:
+            points.append(
+                PointStruct(
+                    id=document.document_id,
+                    vector=document.embedding,
+                    payload={
+                        "document_type": document.document_type.value,
+                        "record_type": document.record_type.value,
+                        "source_document_id": document.source_document_id,
+                        "content": document.content,
+                        "metadata": document.metadata,
+                    },
+                )
+            )
+
+        await self._client.upsert(
+            collection_name=self._collection_name,
+            points=points,
+            wait=True,
+        )
 
     async def search(
         self,
         embedding: list[float],
         limit: int = 10,
     ) -> list[VectorDocument]:
-        raise NotImplementedError()
+
+        results = await self._client.query_points(
+            collection_name=self._collection_name,
+            query=embedding,
+            limit=limit,
+        )
+
+        documents = []
+
+        for point in results.points:
+            payload = point.payload
+
+            documents.append(
+                VectorDocument(
+                    document_id=str(point.id),
+                    document_type=DocumentType(payload["document_type"]),
+                    record_type=RecordType(payload["record_type"]),
+                    source_document_id=payload["source_document_id"],
+                    content=payload["content"],
+                    embedding=[],
+                    metadata=payload.get(
+                        "metadata",
+                        {},
+                    ),
+                )
+            )
+
+        return documents
