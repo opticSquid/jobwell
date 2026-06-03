@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 from app.domains.enums.document_type import DocumentType
 from app.domains.enums.record_type import RecordType
+from app.utils.timestamps import utc_now
 
 
 class VectorDocument(BaseModel):
@@ -15,4 +16,4 @@ class VectorDocument(BaseModel):
     content: str
     embedding: list[float]
     metadata: dict[str, Any] = Field(default_factory=dict)
-    created_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(default_factory=utc_now)
