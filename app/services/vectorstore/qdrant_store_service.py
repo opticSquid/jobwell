@@ -1,7 +1,11 @@
 from qdrant_client import AsyncQdrantClient
-from qdrant_client.models import PointStruct
+from qdrant_client.models import (
+    PointIdsList,
+    PointStruct,
+)
 
 from app.domains.enums.document_type import DocumentType
+from app.domains.enums.record_type import RecordType
 from app.domains.models.vector_document import VectorDocument
 from app.services.vectorstore.base import VectorStore
 
@@ -28,10 +32,23 @@ class QdrantStoreService(VectorStore):
                     id=document.document_id,
                     vector=document.embedding,
                     payload={
+                        "job_id": document.metadata.get("job_id"),
+                        "company": document.metadata.get("company"),
+                        "job_title": document.metadata.get("job_title"),
                         "document_type": document.document_type.value,
                         "record_type": document.record_type.value,
                         "source_document_id": document.source_document_id,
                         "content": document.content,
+                        "skills": document.metadata.get(
+                            "skills",
+                            [],
+                        ),
+                        "keywords": document.metadata.get(
+                            "keywords",
+                            [],
+                        ),
+                        "seniority": document.metadata.get("seniority"),
+                        "years_experience": document.metadata.get("years_experience"),
                         "metadata": document.metadata,
                     },
                 )
@@ -72,7 +89,19 @@ class QdrantStoreService(VectorStore):
                         "metadata",
                         {},
                     ),
+                    score=point.score,
                 )
             )
 
         return documents
+
+    async def delete(
+        self,
+        ids: list[str],
+    ) -> None:
+
+        await self._client.delete(
+            collection_name=self._collection_name,
+            points_selector=PointIdsList(points=ids),
+            wait=True,
+        )

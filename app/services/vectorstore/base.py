@@ -18,3 +18,10 @@ class VectorStore(ABC):
         limit: int = 10,
     ) -> list[VectorDocument]:
         pass
+
+    @abstractmethod
+    async def delete(
+        self,
+        ids: list[str],
+    ) -> None:
+        pass

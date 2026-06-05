@@ -19,6 +19,7 @@ from app.services.extraction.metadata_extraction_service import (
 from app.services.llm.ollama_gemma_llm_service import (
     OllamaGemmaLLMService,
 )
+from app.services.search.semantic_search_service import SemanticSearchService
 from app.services.vectorstore.qdrant_store_service import (
     QdrantStoreService,
 )
@@ -50,6 +51,11 @@ chunking_service = ChunkingService()
 metadata_service = MetadataExtractionService(
     llm_service,
     prompt,
+)
+
+semantic_search_service = SemanticSearchService(
+    embedding_service=embedding_service,
+    vector_store=vector_store,
 )
 
 

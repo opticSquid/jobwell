@@ -27,6 +27,14 @@ class GenerateEmbeddingsNode:
             state.job_posting.job_description
         )
 
+        base_metadata = state.extracted_metadata.model_dump()
+
+        base_metadata["company"] = state.job_posting.company
+
+        base_metadata["job_title"] = state.job_posting.job_title
+
+        base_metadata["job_id"] = state.job_posting.job_id
+
         documents.append(
             VectorDocument(
                 document_id=state.job_posting.job_id,
@@ -35,7 +43,7 @@ class GenerateEmbeddingsNode:
                 source_document_id=state.job_posting.job_id,
                 content=state.job_posting.job_description,
                 embedding=summary_embedding,
-                metadata=state.extracted_metadata.model_dump(),
+                metadata=base_metadata,
             )
         )
 
@@ -55,7 +63,7 @@ class GenerateEmbeddingsNode:
                     source_document_id=state.job_posting.job_id,
                     content=chunk.content,
                     embedding=embedding,
-                    metadata=state.extracted_metadata.model_dump(),
+                    metadata=base_metadata,
                 )
             )
 
