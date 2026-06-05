@@ -25,9 +25,8 @@ class OllamaGemmaLLMService(LLMService):
                     "prompt": prompt,
                     "stream": False,
                 },
-                timeout=300,
+                timeout=360,
             )
-
             response.raise_for_status()
 
             payload = response.json()
